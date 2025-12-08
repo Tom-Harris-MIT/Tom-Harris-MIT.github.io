@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research | Tom Harris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent: #0076df;
+            --accent-hover: #0056b3;
+            --bg: #ffffff;
+            --border: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 17px;
+            line-height: 1.65;
+            color: var(--text-primary);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Navigation */
+        nav {
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-name:hover {
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* Main */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        /* Section Headers */
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        /* Papers */
+        .paper {
+            margin-bottom: 2.5rem;
+        }
+
+        .paper-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            background: #6c757d;
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .paper-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            line-height: 1.4;
+        }
+
+        .paper-authors {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .paper-authors .me {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .paper-authors .expand-authors {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .paper-authors .expand-authors:hover {
+            text-decoration: underline;
+        }
+
+        .paper-authors .hidden-authors {
+            display: none;
+        }
+
+        .paper-authors .hidden-authors.show {
+            display: inline;
+        }
+
+        .paper-year {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .paper-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .paper-links a {
+            font-size: 0.85rem;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+
+        .paper-links a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .paper-media {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .paper-media strong {
+            color: var(--text-primary);
+        }
+
+        .paper-image {
+            max-width: 100%;
+            margin-top: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        /* Abstract */
+        details {
+            display: inline;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: inline-block;
+            transition: all 0.15s ease;
+        }
+
+        details summary:hover {
+            border-color: var(--accent);
+        }
+
+        details[open] summary {
+            margin-bottom: 0.75rem;
+        }
+
+        .abstract-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--border);
+            margin-top: 0.75rem;
+        }
+
+        /* Work in Progress */
+        .wip-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .nav-links {
+                gap: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-name">Tom Harris</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="research.html" class="active">Research</a>
+                <a href="cv.pdf">CV</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Research</h1>
+
+        <h2>Working Papers</h2>
+
+        <div class="paper">
+            <span class="paper-badge">SocArXiv</span>
+            <div class="paper-title">Social Capital in the United Kingdom: Evidence from Six Billion Friendships</div>
+            <div class="paper-authors">
+                <span class="me">Tom Harris</span>, Shankar Iyer, Tom Rutter, Drew Johnston, <span class="expand-authors" onclick="toggleAuthors(this)">and 9 more authors</span><span class="hidden-authors">, Martin Wessel, Guanghua Chi, Patrick Lam, Antonio Silva, Lucy Makinson, Mei-Chen Liou, Yingcan Wang, Qamar Zaman, Michael Bailey</span>
+            </div>
+            <div class="paper-year">2025</div>
+            <div class="paper-links">
+                <details>
+                    <summary>Abstract</summary>
+                    <p class="abstract-text">We construct a range of measures of social capital (the strength and structure of social networks) for the United Kingdom using data from Facebook covering 20.5 million adults. We make these measures publicly available. Low-socioeconomic-status (SES) individuals have far fewer high-SES friends than high-SES individuals do. Areas with more cross-SES friendships display higher levels of intergenerational economic mobility (higher adult earnings for children growing up in disadvantaged families). Most of the difference in connectedness to high-SES individuals between low- and high-SES individuals is due to differences in friending bias—the tendency of people to befriend others similar to themselves even conditional on the possible friends they are exposed to. Areas with more long ties (friendships between people with no mutual connections) also display substantially higher levels of intergenerational economic mobility, and long ties are especially likely to form outside the typical settings in which individuals make friends. The relationships between economic connectedness, long ties, and intergenerational economic mobility remain strong even after controlling for other area-level characteristics. We also make new estimates of intergenerational economic mobility in the UK publicly available, including the first estimates for areas in Scotland and Northern Ireland.</p>
+                </details>
+                <a href="https://osf.io/preprints/socarxiv/kb7dy_v2" target="_blank">Paper</a>
+                <a href="https://data.humdata.org/dataset/uk-social-capital-atlas" target="_blank">Data</a>
+            </div>
+            <div class="paper-media">
+                <strong>Media Coverage:</strong> 
+                <a href="https://www.economist.com/britain/2025/03/24/new-data-show-that-the-class-divide-in-britain-may-not-be-so-wide" target="_blank">The Economist</a>, 
+                <a href="https://www.theguardian.com/society/2025/mar/24/friendships-that-bridge-wealth-divides-help-social-mobility-study-finds" target="_blank">The Guardian</a>, 
+                <a href="https://www.independent.co.uk/news/uk/home-news/children-england-facebook-south-wales-scottish-b2720232.html" target="_blank">The Independent</a>, 
+                <a href="https://www.standard.co.uk/business/money/poorer-children-mixing-with-wealthier-peers-can-lead-to-higher-earnings-b1218363.html" target="_blank">The Standard</a>, 
+                <a href="https://www.thetimes.com/uk/education/article/poor-pupils-with-richer-friends-will-earn-more-as-adults-study-finds-sjjwsx25x" target="_blank">The Times</a>
+            </div>
+            <img src="uk_main_maps.png" alt="Economic Connectedness in the UK" class="paper-image">
+        </div>
+
+        <h2>Policy Papers</h2>
+
+        <div class="paper">
+            <div class="paper-title">Levelling Up the United Kingdom</div>
+            <div class="paper-authors">UK Government White Paper</div>
+            <div class="paper-year">2022</div>
+            <div class="paper-links">
+                <a href="https://www.gov.uk/government/publications/levelling-up-the-united-kingdom" target="_blank">Paper</a>
+            </div>
+        </div>
+
+        <h2>Work in Progress</h2>
+
+        <div class="paper">
+            <div class="wip-title">Who Responds to Climate Risk? Disasters, Insurance Prices, and the Sorting of Migrants by Income</div>
+            <img src="us_mig_map.png" alt="US Migration Map" class="paper-image">
+        </div>
+
+    </main>
+
+    <footer>
+        © 2025 Tom Harris
+    </footer>
+
+    <script>
+        function toggleAuthors(el) {
+            const hidden = el.nextElementSibling;
+            if (hidden.classList.contains('show')) {
+                hidden.classList.remove('show');
+                el.textContent = 'and 9 more authors';
+            } else {
+                hidden.classList.add('show');
+                el.textContent = ' (collapse)';
+            }
+        }
+    </script>
+</body>
+</html>

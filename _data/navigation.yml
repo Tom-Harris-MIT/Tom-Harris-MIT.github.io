@@ -1,7 +1,0 @@
-main:
-  - title: "Home"
-    url: /
-  - title: "Research"
-    url: /publications/
-  - title: "CV"
-    url: /cv.pdf
