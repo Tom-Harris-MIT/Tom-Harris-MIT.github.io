@@ -10,12 +10,28 @@
     var STAR_RGB = '96, 108, 122';
 
     // ---- the actual moon ----
-    var SYNODIC = 29.53058867 * 86400000;
-    var NEW_MOON = Date.UTC(2000, 0, 6, 18, 14); // a known new moon
     var PHASE_NAMES = ['new moon', 'waxing crescent', 'first quarter', 'waxing gibbous',
                        'full moon', 'waning gibbous', 'last quarter', 'waning crescent'];
+    // Sun/moon ecliptic longitudes with the main perturbation terms (truncated
+    // Meeus). Elongation comes out within ~0.5°, so the lit percentage matches
+    // the almanac to about a point. 0 = new, 0.5 = full.
     function moonPhase() {
-        return (((Date.now() - NEW_MOON) % SYNODIC) + SYNODIC) % SYNODIC / SYNODIC;
+        var d = Date.now() / 86400000 - 10957.5;     // days since J2000.0
+        var rad = Math.PI / 180;
+        var Ms = 357.529 + 0.98560028 * d;           // sun mean anomaly
+        var sunLon = 280.459 + 0.98564736 * d
+            + 1.915 * Math.sin(Ms * rad)
+            + 0.020 * Math.sin(2 * Ms * rad);
+        var Lm = 218.316 + 13.176396 * d;            // moon mean longitude
+        var Mm = 134.963 + 13.064993 * d;            // moon mean anomaly
+        var Dm = 297.850 + 12.190749 * d;            // mean elongation
+        var moonLon = Lm
+            + 6.289 * Math.sin(Mm * rad)             // equation of the centre
+            + 1.274 * Math.sin((2 * Dm - Mm) * rad)  // evection
+            + 0.658 * Math.sin(2 * Dm * rad)         // variation
+            - 0.186 * Math.sin(Ms * rad);            // annual equation
+        var elong = (((moonLon - sunLon) % 360) + 360) % 360;
+        return elong / 360;
     }
     function phaseName(p) { return PHASE_NAMES[Math.round(p * 8) % 8]; }
     function phaseIllum(p) { return (1 - Math.cos(2 * Math.PI * p)) / 2; }
@@ -35,22 +51,34 @@
         c.closePath();
     }
 
-    // ---- constellations (normalized boxes, y down) ----
+    // ---- constellations (normalized boxes, y down; array order = priority) ----
     var CONSTELLATIONS = [
         {
-            name: 'the big dipper', zone: 'right', aspect: 0.50, maxW: 215, vpos: 0.58,
+            name: 'ursa major', zone: 'right', aspect: 0.50, maxW: 215, vpos: 0.58,
             pts: [[0.04, 0.50], [0.24, 0.32], [0.42, 0.26], [0.58, 0.22], [0.78, 0.12], [0.82, 0.42], [0.62, 0.48]],
             lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]]
         },
         {
-            name: 'orion', zone: 'left', aspect: 1.40, maxW: 145, vpos: 0.62,
+            name: 'orion', zone: 'left', aspect: 1.40, maxW: 145, vpos: 0.76,
             pts: [[0.26, 0.12], [0.72, 0.16], [0.40, 0.54], [0.50, 0.50], [0.60, 0.46], [0.34, 0.88], [0.74, 0.86]],
             lines: [[0, 1], [0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6], [5, 6]]
         },
         {
-            name: 'cassiopeia', zone: 'left', aspect: 0.45, maxW: 165, vpos: 0.22,
+            name: 'cassiopeia', zone: 'left', aspect: 0.45, maxW: 165, vpos: 0.20,
             pts: [[0.04, 0.52], [0.27, 0.20], [0.50, 0.48], [0.73, 0.16], [0.96, 0.40]],
             lines: [[0, 1], [1, 2], [2, 3], [3, 4]]
+        },
+        {
+            // the little dipper, pouring back toward the big one; Polaris at the handle tip
+            name: 'ursa minor', zone: 'right', aspect: 0.62, maxW: 150, vpos: 0.36,
+            pts: [[0.96, 0.08], [0.80, 0.20], [0.62, 0.33], [0.45, 0.44], [0.26, 0.58], [0.06, 0.46], [0.24, 0.31]],
+            lines: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]]
+        },
+        {
+            // the northern cross: Deneb at the top, Albireo at the foot
+            name: 'cygnus', zone: 'left', aspect: 1.20, maxW: 130, vpos: 0.42,
+            pts: [[0.50, 0.04], [0.50, 0.40], [0.54, 0.96], [0.12, 0.22], [0.88, 0.56]],
+            lines: [[0, 1], [1, 2], [3, 1], [1, 4]]
         }
     ];
 
@@ -117,14 +145,33 @@
             }
         });
 
+        var placed = { left: [], right: [] };
+
+        // the moon claims the top-right corner first
+        if (zones.right.w >= 90) {
+            moon = {
+                x: zones.right.x + Math.min(zones.right.w * 0.5, 130),
+                y: 105,
+                r: 14,
+                phase: moonPhase(),
+                hover: 0
+            };
+            placed.right.push({ y0: 40, y1: 172 }); // glow + phase label space
+        }
+
         CONSTELLATIONS.forEach(function (def) {
             var z = zones[def.zone];
             if (!z || z.w < 120) return;
             var w = Math.min(def.maxW, z.w - 24);
             var h = w * def.aspect;
+            if (h > z.h - 60) return;
             var x0 = z.x + (z.w - w) / 2;
-            var y0 = Math.min(Math.max(z.y + 10, vh * def.vpos - h / 2), vh - h - 40);
-            if (y0 < z.y || h > z.h - 60) return;
+            var y0 = Math.min(Math.max(z.y + 10, vh * def.vpos - h / 2), vh - h - 50);
+            var rects = placed[def.zone];
+            for (var k = 0; k < rects.length; k++) {
+                if (y0 - 26 < rects[k].y1 && y0 + h + 26 > rects[k].y0) return; // crowded: skip
+            }
+            rects.push({ y0: y0, y1: y0 + h + 18 }); // body + name label
             var c = {
                 name: def.name, lines: def.lines, hover: 0,
                 cx: x0 + w / 2, cy: y0 + h / 2,
@@ -146,16 +193,6 @@
             };
             consts.push(c);
         });
-
-        if (zones.right.w >= 90) {
-            moon = {
-                x: zones.right.x + Math.min(zones.right.w * 0.5, 130),
-                y: 105,
-                r: 14,
-                phase: moonPhase(),
-                hover: 0
-            };
-        }
 
         return stars.length > 0 || !!moon;
     }
