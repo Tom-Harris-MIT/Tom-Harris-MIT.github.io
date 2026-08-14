@@ -67,6 +67,29 @@
             color: var(--text-primary);
         }
 
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-indicator {
+            display: inline-block;
+            transition: transform 0.18s ease;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .project-list.collapsed { display: none; }
+        .toggle-btn[aria-expanded="false"] .toggle-indicator { transform: rotate(-90deg); }
+
         .project-list {
             display: grid;
             gap: 2rem;
@@ -126,9 +149,11 @@
     </nav>
 
     <main>
-        <h2>Side projects</h2>
-        
-        <div class="project-list">
+        <h2>
+            <button id="toggle-projects" class="toggle-btn" aria-expanded="false">Side projects <span class="toggle-indicator">▾</span></button>
+        </h2>
+
+        <div class="project-list collapsed">
             <div class="project-item">
                 <a href="https://corpus-ruby.vercel.app/" target="_blank" class="project-title">A Map of a Large Language Model</a>
                 <span class="project-desc">Visualising GPT-2.</span>
@@ -155,7 +180,7 @@
             </div>
 
             <div class="project-item">
-                <a href="https://github.com/TomMHarris/lse-phd-economics-notes" target="_blank" class="project-title">EconomicsPhD Notes</a>
+                <a href="https://github.com/TomMHarris/lse-phd-economics-notes" target="_blank" class="project-title">Economics PhD Notes</a>
                 <span class="project-desc">Notes from the LSE PhD in Economics.</span>
             </div>
         </div>
@@ -166,6 +191,18 @@
     </main>
 
     <footer>© 2026 Tom Harris</footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('toggle-projects');
+        var list = document.querySelector('.project-list');
+        if (!btn || !list) return;
+        btn.addEventListener('click', function () {
+            var collapsed = list.classList.toggle('collapsed');
+            btn.setAttribute('aria-expanded', String(!collapsed));
+        });
+    });
+    </script>
 
     <script src="night.js" defer></script>
     <script src="runner.js" defer></script>
