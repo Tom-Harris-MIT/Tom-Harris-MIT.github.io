@@ -204,6 +204,29 @@
             color: var(--text-primary);
         }
 
+        .paper-media a {
+            color: var(--text-secondary);
+            font-weight: 500;
+            /* Padding gives the FT hover chip room; the negative margin cancels
+               it so resting text position is unchanged. */
+            padding: 0.1rem 0.3rem;
+            margin: 0 -0.3rem;
+            border-radius: 3px;
+            transition: color 0.15s ease, background-color 0.15s ease;
+        }
+
+        /* Outlet brand colours, revealed on hover */
+        /* FT: Oxford Blue on FT Pink, as on ft.com */
+        .paper-media a.outlet-ft:hover {
+            color: #0F5499;
+            background-color: #FFF1E5;
+        }
+        .paper-media a.outlet-economist:hover { color: #E3120B; }   /* Economist Red */
+        .paper-media a.outlet-guardian:hover { color: #052962; }    /* Guardian Blue */
+        .paper-media a.outlet-independent:hover { color: #EE2E24; } /* Independent Red */
+        .paper-media a.outlet-standard:hover { color: #0C1B2A; }    /* Standard Navy */
+        .paper-media a.outlet-times:hover { color: #00417A; }       /* Times Navy */
+
         .paper-image {
             max-width: 70%;
             margin-top: 1rem;
@@ -300,6 +323,26 @@
         <h2>Working Papers</h2>
 
         <div class="paper">
+            <span class="paper-badge">SSRN</span>
+            <div class="paper-title">The Shape of Economics: Semantic Structure, Knowledge Flows, and Specialization</div>
+            <div class="paper-authors"><span class="me">Tom Harris</span></div>
+            <div class="paper-year">2026</div>
+            <div class="paper-links">
+                <details>
+                    <summary>Abstract</summary>
+                    <p class="abstract-text">How is economics evolving as a discipline—are its subfields converging or fragmenting, and what drives the growth of new research areas? I construct a semantic map of ∼50,000 papers from 24 journals and NBER Working Papers (2000–2026) by embedding titles and abstracts into a continuous intellectual space using SPECTER2, a transformer model trained on scientific text. The map reveals a discipline that is specializing in place, not splintering apart: within-field homogeneity has increased substantially, yet the distances between fields have remained essentially unchanged. Compositionally, applied empirical fields have expanded while theoretical and financial clusters have contracted—the credibility revolution is visible in the data. Fields whose researchers and citations reach into intellectually distant areas tend to grow faster (ρ = 0.29 for author mobility, ρ = 0.41 for outgoing citations), while exchange between nearby fields does not predict growth. This asymmetry is consistent with recombinant growth models, in which the innovative potential of combining ideas increases with the distance between them. At the paper level, however, boundary-spanning papers do not earn a citation premium, suggesting the mechanism operates through the flow of researchers across intellectual borders rather than through individual interdisciplinary papers. An interactive version of the map is publicly available.</p>
+                </details>
+                <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6549201" target="_blank">Paper</a>
+                <a href="https://econ-network.vercel.app/" target="_blank">Interactive Map</a>
+            </div>
+            <div class="paper-media">
+                <strong>Media Coverage:</strong>
+                <a class="outlet-ft" href="https://www.ft.com/content/ea4d4326-878d-4e9e-9303-466c8a382c60?syn-25a6b1a6=1" target="_blank">Financial Times</a>
+            </div>
+            <img src="fig1_semantic_map.png" alt="Semantic map of economics research" class="paper-image" style="max-width: 50%;">
+        </div>
+
+        <div class="paper">
             <span class="paper-badge">SocArXiv</span>
             <div class="paper-title">Social Capital in the United Kingdom: Evidence from Six Billion Friendships</div>
             <div class="paper-authors">
@@ -315,30 +358,14 @@
                 <a href="https://data.humdata.org/dataset/uk-social-capital-atlas" target="_blank">Data</a>
             </div>
             <div class="paper-media">
-                <strong>Media Coverage:</strong> 
-                <a href="https://www.economist.com/britain/2025/03/24/new-data-show-that-the-class-divide-in-britain-may-not-be-so-wide" target="_blank">The Economist</a>, 
-                <a href="https://www.theguardian.com/society/2025/mar/24/friendships-that-bridge-wealth-divides-help-social-mobility-study-finds" target="_blank">The Guardian</a>, 
-                <a href="https://www.independent.co.uk/news/uk/home-news/children-england-facebook-south-wales-scottish-b2720232.html" target="_blank">The Independent</a>, 
-                <a href="https://www.standard.co.uk/business/money/poorer-children-mixing-with-wealthier-peers-can-lead-to-higher-earnings-b1218363.html" target="_blank">The Standard</a>, 
-                <a href="https://www.thetimes.com/uk/education/article/poor-pupils-with-richer-friends-will-earn-more-as-adults-study-finds-sjjwsx25x" target="_blank">The Times</a>
+                <strong>Media Coverage:</strong>
+                <a class="outlet-economist" href="https://www.economist.com/britain/2025/03/24/new-data-show-that-the-class-divide-in-britain-may-not-be-so-wide" target="_blank">The Economist</a>,
+                <a class="outlet-guardian" href="https://www.theguardian.com/society/2025/mar/24/friendships-that-bridge-wealth-divides-help-social-mobility-study-finds" target="_blank">The Guardian</a>,
+                <a class="outlet-independent" href="https://www.independent.co.uk/news/uk/home-news/children-england-facebook-south-wales-scottish-b2720232.html" target="_blank">The Independent</a>,
+                <a class="outlet-standard" href="https://www.standard.co.uk/business/money/poorer-children-mixing-with-wealthier-peers-can-lead-to-higher-earnings-b1218363.html" target="_blank">The Standard</a>,
+                <a class="outlet-times" href="https://www.thetimes.com/uk/education/article/poor-pupils-with-richer-friends-will-earn-more-as-adults-study-finds-sjjwsx25x" target="_blank">The Times</a>
             </div>
             <img src="uk_main_maps.png" alt="Economic Connectedness in the UK" class="paper-image">
-        </div>
-
-        <div class="paper">
-            <span class="paper-badge">SSRN</span>
-            <div class="paper-title">The Shape of Economics: Semantic Structure, Knowledge Flows, and Specialization</div>
-            <div class="paper-authors"><span class="me">Tom Harris</span></div>
-            <div class="paper-year">2026</div>
-            <div class="paper-links">
-                <details>
-                    <summary>Abstract</summary>
-                    <p class="abstract-text">How is economics evolving as a discipline—are its subfields converging or fragmenting, and what drives the growth of new research areas? I construct a semantic map of ∼50,000 papers from 24 journals and NBER Working Papers (2000–2026) by embedding titles and abstracts into a continuous intellectual space using SPECTER2, a transformer model trained on scientific text. The map reveals a discipline that is specializing in place, not splintering apart: within-field homogeneity has increased substantially, yet the distances between fields have remained essentially unchanged. Compositionally, applied empirical fields have expanded while theoretical and financial clusters have contracted—the credibility revolution is visible in the data. Fields whose researchers and citations reach into intellectually distant areas tend to grow faster (ρ = 0.29 for author mobility, ρ = 0.41 for outgoing citations), while exchange between nearby fields does not predict growth. This asymmetry is consistent with recombinant growth models, in which the innovative potential of combining ideas increases with the distance between them. At the paper level, however, boundary-spanning papers do not earn a citation premium, suggesting the mechanism operates through the flow of researchers across intellectual borders rather than through individual interdisciplinary papers. An interactive version of the map is publicly available.</p>
-                </details>
-                <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6549201" target="_blank">Paper</a>
-                <a href="https://econ-network.vercel.app/" target="_blank">Interactive Map</a>
-            </div>
-            <img src="fig1_semantic_map.png" alt="Semantic map of economics research" class="paper-image" style="max-width: 50%;">
         </div>
 
         <h2>Work in Progress</h2>
